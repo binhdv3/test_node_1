@@ -1,0 +1,88 @@
+<div class="container">
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Image</th>
+                <th scope="col">Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each products}}
+            <tr>
+                <td>{{this.name}}</td>
+                <td><img src="{{this.image}}" alt=""></td>
+                <td>{{this.price}}</td>
+                <td>
+                    <a href="" data-toggle="modal" data-id="{{this._id}}"
+                            data-target="#delete_product_modal">Delete</a>
+                    <a href="/product/edit/{{this._id}}">Edit</a>
+                </td>
+            </tr>
+            {{else}}
+            <h6>Bạn chưa có sản phẩm <a href="/product/create">thêm sản phẩm</a></h6>
+            {{/each}}
+        </tbody>
+    </table>
+</div>
+
+{{!-- confirm delete course --}}
+<!-- The Modal -->
+<div class="modal fade" id="delete_product_modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Delete Product</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                Are you sure?
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button id="btn_delete_product" type="button" class="btn btn-danger">Yes</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{{!-- form DELETE hehe --}}
+<form method="POST" name="del_product_form"></form>
+<script>
+    var productID;
+    var deleteForm = document.forms['del_product_form'];
+    var btnDeleteProduct = document.getElementById('btn_delete_product');
+
+    document.addEventListener('DOMContentLoaded', function () {
+        //khi click nút delete thì truyền id vào model 
+        $('#delete_product_modal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget) // Button that triggered the modal
+            productID = button.data('id'); //gán id khi bấm vào delete cho biến productID cục bộ
+            console.log (productID);
+    })})
+    console.log(btnDeleteProduct);
+
+    btnDeleteProduct.onclick = function () {
+        deleteForm.action = '/product/delete/' + productID + '?_method=DELETE' //getId từ nút delete rồi thay action của form thành  /course/:id?_method=DELETE
+        deleteForm.submit(); //submit form thay vì nút buttom như mọi khi
+    }
+
+</script>
+
+<style>
+    .container {
+        margin-top: 100px;
+    }
+
+    img {
+        width: 200px;
+        height: 200px;
+    }
+</style>
